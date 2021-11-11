@@ -1,7 +1,8 @@
 version: "3.3"
 services:
-  db:
+  db-com:
     image: postgres:14
+    container_name: db-com
     volumes:
       - ./tmp/db:/var/lib/postgresql/data:cached
     environment:
@@ -9,30 +10,20 @@ services:
       POSTGRES_PASSWORD: 123qwe123qwe
       POSTGRES_DB: db_development
 
-  web:
+  server-com:
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && rails s -p 3000 -b '0.0.0.0'"
+    container_name: server-com
+    command: bash -c "rm -f tmp/pids/server.pid && rails s -p 3003 -b '0.0.0.0'"
     volumes:
       - .:/app
     environment:
       RABBITMQ_HOST: rabbitmq
     ports:
-      - "3000:3000"
+      - "3003:3003"
     depends_on:
-      - db
-      - rabbitmq
-      - redis
-    links:
-      - rabbitmq
+      - db-com
 
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    ports:
-      - 5672:5672
-      - 15672:15672
-
-  redis:
-    image: redis:3.2
-    ports:
-      - 6379:6379
+networks:
+  default:
+    external:
+      name: charlist_project_general
