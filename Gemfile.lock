@@ -141,7 +141,16 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    serverengine (2.0.7)
+      sigdump (~> 0.2.2)
     set (1.0.2)
+    sigdump (0.2.4)
+    sneakers (2.11.0)
+      bunny (~> 2.12)
+      concurrent-ruby (~> 1.0)
+      rake
+      serverengine (~> 2.0.5)
+      thor
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
@@ -175,6 +184,7 @@ DEPENDENCIES
   pg
   puma (~> 5.0)
   rails (~> 6.1.4, >= 6.1.4.1)
+  sneakers
   spring
   tzinfo-data
 

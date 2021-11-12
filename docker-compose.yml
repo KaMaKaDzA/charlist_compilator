@@ -23,6 +23,18 @@ services:
     depends_on:
       - db-com
 
+  worker:
+    build: .
+    command: bash -c 'rake sneakers:run'
+    container_name: worker
+    volumes:
+      - .:/app
+    environment:
+      WORKERS: Compiler
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - db-com
+
 networks:
   default:
     external:
