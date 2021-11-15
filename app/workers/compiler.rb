@@ -4,10 +4,10 @@ class Compiler
   include Sneakers::Worker
   from_queue 'pdf_compilation.send'
 
-  def work(msg)
-    # result = ::PdfCompiler.call(msg)
-    # responce = result[:errors].blank? ? { success: true, data: result[:data] } : { success: false, data: result[:errors] }
-    publish("#{msg}, nothing was implemented", to_queue: 'pdf_compilation.responce', durable: true)
+  def work(params)
+    res = PdfCompiler.call(params)
+    payload = res[:error].present? ? { success: false, data: res[:error] } :  { success: true, data: res[:data] }
+    publish(payload.to_json, to_queue: 'pdf_compilation.responce', durable: true)
 
     ack!
   end
